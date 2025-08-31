@@ -19,7 +19,9 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       withCredentials: true,
     }).then((res) => {
       console.log(res.data);
-      check();
+      if (res.status == 200) {
+        check();
+      }
     });
   }, []);
 
@@ -29,8 +31,12 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       url: "https:10.21.97.249:8000/core/login/",
       withCredentials: true,
     }).then((r) => {
-      setUser((prv) => (prv = r.data));
-      navigate({ to: "/user" });
+      if (r.status == 200) {
+        setUser((prv) => (prv = r.data));
+        navigate({ to: "/user" });
+      } else {
+        navigate({ to: "/" });
+      }
     });
   };
   const logout = useCallback(() => {
@@ -39,8 +45,10 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       url: "https:10.21.97.249:8000/core/login/",
       withCredentials: true,
     }).then((r) => {
-      setUser((prv) => (prv = null));
-      navigate({ to: "/" });
+      if (r.status === 200) {
+        setUser((prv) => (prv = null));
+        navigate({ to: "/" });
+      }
     });
   }, []);
   useEffect(() => {
