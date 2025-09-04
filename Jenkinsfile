@@ -19,6 +19,38 @@ pipeline{
                 }
             }
         }
+        stage("Test"){
+            steps{
+                echo "========executing Test========"
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========Test executed successfully========"
+                }
+                failure{
+                    echo "========Test execution failed========"
+                }
+            }
+        }
+        stage("Deploy"){
+            steps{
+                echo "========executing Deploy========"
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========Deploy executed successfully========"
+                }
+                failure{
+                    echo "========Deploy execution failed========"
+                }
+            }
+        }
     }
     post{
         always{
@@ -31,4 +63,4 @@ pipeline{
             echo "========pipeline execution failed========"
         }
     }
-}
+}   
