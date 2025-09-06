@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("Build"){
             steps{
-                echo "========executing Build========"
+                echo "========Dev executing Build========"
             }
             post{
                 always{
@@ -19,7 +19,7 @@ pipeline{
         }
         stage("Test"){
             steps{
-                echo "========executing Test========"
+                echo "========Dev executing Test========"
             }
             post{
                 always{
@@ -35,7 +35,7 @@ pipeline{
         }
         stage("Deploy"){
             steps{
-                echo "========executing Deploy========"
+                echo "========Dev executing Deploy========"
             }
             post{
                 always{

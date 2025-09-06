@@ -1,0 +1,14 @@
+version: "1.1"
+services:
+  authcontext:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      [
+        "sh",
+        "-c",
+        "echo 'Build is Serving' && bun run .output/server/index.mjs",
+      ]
+    ports:
+      - 3000:3000
