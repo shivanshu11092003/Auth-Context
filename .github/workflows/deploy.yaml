@@ -2,7 +2,7 @@ name: Github Actions
 on:
     push:
         branches:
-            - master
+            - fix
 jobs:
     deploy:
         runs-on: ubuntu-latest
@@ -13,12 +13,9 @@ jobs:
         - name: Checkout Code
           uses: actions/checkout@v4
 
-        - name: Displayfiles
-          uses: ls
+        - uses: sobolevn/misspell-fixer-action@master
         
-        - name: Deploy
-          uses: peaceiris/actions-gh-pages@v4
+        - uses: peter-evans/create-pull-request@v2.4.4
           with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./
+            token: ${{ secrets.GITHUB_TOKEN }}
 
