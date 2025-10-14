@@ -3,19 +3,25 @@ name: Github Actions
 on:
   - push
 
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
-  build:
-
+  typo-fix:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: sobolevn/misspell-fixer-action@master
-      with:
-       options: "-r ."
-    - uses: peter-evans/create-pull-request@v6
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'Fixes by misspell-fixer'
-        title: 'Typos fix by misspell-fixer'
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fix spelling mistakes
+        uses: sobolevn/misspell-fixer-action@master
+        with:
+          options: "-r ."
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: fix/auto-typos
+          title: "Fix typos automatically"
+          body: "This PR fixes spelling mistakes found by misspell-fixer."
 
