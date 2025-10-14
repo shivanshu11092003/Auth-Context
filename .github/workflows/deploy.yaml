@@ -20,5 +20,7 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
             commit-message: "Fix typos"
             title: "Fix typos automatically"
-            branch: fix
+            branch: fix/auto-typos 
+            base: master
+            delete-branch: true 
 
