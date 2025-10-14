@@ -22,5 +22,4 @@ jobs:
             title: "Fix typos automatically"
             branch: fix-auto-typos-${{ github.run_id }}
             base: master
-            delete-branch: true 
 
