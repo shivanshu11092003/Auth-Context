@@ -2,6 +2,7 @@ name: Github Actions
 
 on:
   - push
+  - create
 
 permissions:
   contents: write
@@ -14,18 +15,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+
       - name: Fix spelling mistakes
         uses: sobolevn/misspell-fixer-action@master
         with:
           options: "-r ."
+  
+   
+        
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
-            token: ${{ secrets.PAT_TOKEN }}
-            base: master             
+            token: ${{ secrets.GITHUB_TOKEN }}
+            base: ${{ github.head_ref }}
             branch: auto-typos-fix    
             title: "Fix typos automatically"
             commit-message: "Fix typos via GitHub Action"
-            delete-branch: true       
+            delete-branch: true   
+      - name: Debug secret presence
+        run: |
+              if [ -z "${{ secrets.PAT_TOKEN }}" ]; then
+                echo "PAT_TOKEN is missing!"
+                exit 1
+              else
+                echo "PAT_TOKEN detected (hidden)."
+              fi    
 
