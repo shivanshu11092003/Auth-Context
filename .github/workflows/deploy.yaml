@@ -23,9 +23,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
             token: ${{ secrets.PAT_TOKEN }}
-            base: master              # target branch
-            branch: auto-typos-fix    # new branch for PR
+            base: master             
+            branch: auto-typos-fix    
             title: "Fix typos automatically"
             commit-message: "Fix typos via GitHub Action"
-            delete-branch: true       # optional
+            delete-branch: true       
 
