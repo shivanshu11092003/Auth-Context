@@ -22,7 +22,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-            token: ${{ secrets.GITHUB_TOKEN }}
+            token: ${{ secrets.PAT.PAT_TOKEN }}
             base: master              # target branch
             branch: auto-typos-fix    # new branch for PR
             title: "Fix typos automatically"
