@@ -32,9 +32,9 @@ jobs:
 
       - name: Create Pull Request
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          gh auth login --with-token <<< "$GITHUB_TOKEN"
+          gh auth login --with-token <<< "$PAT_TOKEN"
           gh pr create -B master -H auto-typos-fix \
             --title "Fix typos automatically" \
             --body "Created by GitHub Action"
