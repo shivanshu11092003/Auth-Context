@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B auto-typos-fix
+          git checkout fix
           git add .
 
           # if git diff --cached --quiet; then
@@ -43,7 +43,7 @@ jobs:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           gh auth login --with-token <<< "$PAT_TOKEN"
-          gh pr create -B master -H auto-typos-fix \
+          gh pr create -B master -H fix \
             --title "Fix typos automatically" \
             --body "Created by GitHub Action"
 
