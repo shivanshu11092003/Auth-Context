@@ -35,7 +35,7 @@ jobs:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           gh auth login --with-token <<< "$PAT_TOKEN"
-          gh pr create -B master -H auto-typos-fix \
+          gh pr create -B fix -H auto-typos-fix \
             --title "Fix typos automatically" \
             --body "Created by GitHub Action"
 
