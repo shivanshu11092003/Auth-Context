@@ -33,7 +33,7 @@ jobs:
           #   echo "no_changes=true" >> $GITHUB_ENV
           # else
           git commit -m "Fix typos via GitHub Action"
-          git push origin auto-typos-fix --force
+          git push origin fix --force
           # echo "no_changes=false" >> $GITHUB_ENV
           # fi
 
