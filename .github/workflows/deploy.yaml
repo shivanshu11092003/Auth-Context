@@ -21,29 +21,21 @@ jobs:
         with:
           options: "-r ."
 
-      - name: Commit and Push Changes
+      - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout fix
+          git checkout -b auto-typos-fix
           git add .
-
-          # if git diff --cached --quiet; then
-          #   echo "No changes detected. Skipping commit and PR creation."
-          #   echo "no_changes=true" >> $GITHUB_ENV
-          # else
-          git commit -m "Fix typos via GitHub Action"
-          git push origin fix --force
-          # echo "no_changes=false" >> $GITHUB_ENV
-          # fi
+          git commit -m "Fix typos via GitHub Action" || echo "No changes to commit"
+          git push origin auto-typos-fix || echo "No changes to push"
 
       - name: Create Pull Request
-        if: env.no_changes == 'false'
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           gh auth login --with-token <<< "$PAT_TOKEN"
-          gh pr create -B master -H fix \
+          gh pr create -B master -H auto-typos-fix \
             --title "Fix typos automatically" \
             --body "Created by GitHub Action"
 
