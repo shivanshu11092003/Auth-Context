@@ -21,7 +21,7 @@ jobs:
         with:
           options: "-r ."
 
-       - name: Commit and Push Changes
+      - name: Commit and Push Changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
