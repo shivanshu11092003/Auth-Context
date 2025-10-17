@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: fix
+          fetch-depth: 0
 
       - name: Fix spelling mistakes
         uses: sobolevn/misspell-fixer-action@master
@@ -25,19 +28,26 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull origin fix
           git checkout -b auto-typos-fix
           git add .
           git commit -m "Fix typos via GitHub Action" || echo "No changes to commit"
-          git push origin auto-typos-fix || echo "No changes to push"
+          git push --set-upstream origin auto-typos-fix || echo "No changes to push"
 
       - name: Create Pull Request
+        if: ${{ always() }}
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           gh auth login --with-token <<< "$PAT_TOKEN"
-          gh pr create -B fix -H auto-typos-fix \
-            --title "Fix typos automatically" \
-            --body "Created by GitHub Action"
+          if ! git diff --quiet origin/fix..origin/auto-typos-fix; then
+            gh pr create -B fix -H auto-typos-fix \
+              --title "Fix typos automatically" \
+              --body "Created by GitHub Action"
+          else
+            echo "No changes between fix and auto-typos-fix; skipping PR."
+          fi
+
 
 
   
