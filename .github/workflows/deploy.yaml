@@ -1,41 +1,43 @@
 name: Github Actions
 
 on:
-  - push
-  - create
+  push:
+    branches: fix
 
 permissions:
   contents: write
   pull-requests: write
-  
+
 jobs:
   typo-fix:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
 
       - name: Fix spelling mistakes
         uses: sobolevn/misspell-fixer-action@master
         with:
           options: "-r ."
-  
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            base: ${{ github.head_ref }}
-            branch: auto-typos-fix    
-            title: "Fix typos automatically"
-            commit-message: "Fix typos via GitHub Action"
-            delete-branch: true   
-      - name: Debug secret presence
-        run: |
-              if [ -z "${{ secrets.PAT_TOKEN }}" ]; then
-                echo "PAT_TOKEN is missing!"
-                exit 1
-              else
-                echo "PAT_TOKEN detected (hidden)."
-              fi    
 
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b auto-typos-fix
+          git add .
+          git commit -m "Fix typos via GitHub Action" || echo "No changes to commit"
+          git push origin auto-typos-fix || echo "No changes to push"
+
+      - name: Create Pull Request
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          gh auth login --with-token <<< "$PAT_TOKEN"
+          gh pr create -B master -H auto-typos-fix \
+            --title "Fix typos automatically" \
+            --body "Created by GitHub Action"
+
+
+  
