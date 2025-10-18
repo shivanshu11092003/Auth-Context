@@ -16,9 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          ref: fix
-          fetch-depth: 0
 
       - name: Run misspell fixer
         uses: sobolevn/misspell-fixer-action@master
