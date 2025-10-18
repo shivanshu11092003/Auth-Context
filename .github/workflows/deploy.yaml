@@ -22,7 +22,7 @@ jobs:
       - name: Fix spelling mistakes
         uses: sobolevn/misspell-fixer-action@master
         with:
-          options: "-rw /src/routes"
+          options: "-r ./src/routes"
 
       - name: Commit changes
         run: |
@@ -39,14 +39,18 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          gh auth login --with-token <<< "$PAT_TOKEN"
-          if ! git diff --quiet origin/master..origin/fix; then
-            gh pr create -B master -H fix \
-              --title "Fix typos automatically" \
-              --body "Created by GitHub Action"
-          else
-            echo "No changes between master and fix; skipping PR."
-          fi
+           gh auth login --with-token <<< "$PAT_TOKEN"
+            if gh pr view fix --base master >/dev/null 2>&1; then
+              echo "A pull request from fix to master already exists. Skipping creation."
+            else
+              if ! git diff --quiet origin/master..origin/fix; then
+                gh pr create -B master -H fix \
+                  --title "Fix typos automatically" \
+                  --body "Created by GitHub Action"
+              else
+                echo "No changes between master and fix; skipping PR."
+              fi
+            fi
 
 
 
