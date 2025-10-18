@@ -1,19 +1,53 @@
-name: misspell
+name: Github Actions
 
 on:
   push:
     branches: fix
 
-jobs:
-  build:
+permissions:
+  contents: write
+  pull-requests: write
 
+jobs:
+  typo-fix:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: sobolevn/misspell-fixer-action@master
-    - uses: peter-evans/create-pull-request@v7.0.8
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'Fixes by misspell-fixer'
-        title: 'Typos fix by misspell-fixer'
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: fix
+          fetch-depth: 0
+
+      - name: Fix spelling mistakes
+        uses: sobolevn/misspell-fixer-action@master
+        with:
+          options: "-r ."
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout fix
+          git pull origin fix
+          git add .
+          git commit -m "Fix typos via GitHub Action" || echo "No changes to commit"
+          git push --set-upstream origin fix || echo "No changes to push"
+
+      - name: Create Pull Request
+        if: ${{ always() }}
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          gh auth login --with-token <<< "$PAT_TOKEN"
+          if ! git diff --quiet origin/master..origin/fix; then
+            gh pr create -B master -H fix \
+              --title "Fix typos automatically" \
+              --body "Created by GitHub Action"
+          else
+            echo "No changes between master and fix; skipping PR."
+          fi
+
+
+
+  
