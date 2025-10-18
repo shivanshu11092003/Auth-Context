@@ -20,9 +20,8 @@ jobs:
           fetch-depth: 0
 
       - name: Fix spelling mistakes
-        uses: sobolevn/misspell-fixer-action@master
-        with:
-          options: "-r ."
+        uses: streetsidesoftware/cspell-action@v7
+        
 
       - name: Commit changes
         run: |

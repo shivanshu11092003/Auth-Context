@@ -27,20 +27,7 @@ function App() {
 				flexble and effcient, making the systm esy to maintane and updte ovr
 				time.
 			</p>
-			<p>
-				Ths projct aimz to improove the qulity of dat colectd from varous
-				sourcess. By usng advnced algoritms, we can analize the infomation more
-				acurately and genrate bettr resultss. Evry moduel is designd to be
-				flexble and effcient, making the systm esy to maintane and updte ovr
-				time.
-			</p>
-			<p>
-				Ths projct aimz to improove the qulity of dat colectd from varous
-				sourcess. By usng advnced algoritms, we can analize the infomation more
-				acurately and genrate bettr resultss. Evry moduel is designd to be
-				flexble and effcient, making the systm esy to maintane and updte ovr
-				time.
-			</p>
+
 			<p>
 				Ths projct aimz to improove the qulity of dat colectd from varous
 				sourcess. By usng advnced algoritms, we can analize the infomation more
