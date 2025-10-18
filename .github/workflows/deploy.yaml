@@ -17,10 +17,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Print current branch
+        run: |
+          echo "Current branch: $GITHUB_REF"
+          echo "Short branch name: ${GITHUB_REF#refs/heads/}"
+
       - name: Run misspell fixer
         uses: sobolevn/misspell-fixer-action@master
         with:
-          options: "-r -d -v ./ | grep 'Changed file'"
+          options: "-r -v ./"
 
       - name: Commit and push corrected files
         run: |
@@ -35,26 +40,3 @@ jobs:
             git push origin fix
             echo "Spelling fixes pushed to 'fix' branch."
           fi
-
- 
-      # - name: Create Pull Request
-      #   if: ${{ always() }}
-      #   env:
-      #     PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-      #   run: |
-      #      gh auth login --with-token <<< "$PAT_TOKEN"
-      #       if gh pr view fix --base master >/dev/null 2>&1; then
-      #         echo "A pull request from fix to master already exists. Skipping creation."
-      #       else
-      #         if ! git diff --quiet origin/master..origin/fix; then
-      #           gh pr create -B master -H fix \
-      #             --title "Fix typos automatically" \
-      #             --body "Created by GitHub Action"
-      #         else
-      #           echo "No changes between master and fix; skipping PR."
-      #         fi
-      #       fi
-
-
-
-  
