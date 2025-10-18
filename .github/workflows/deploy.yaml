@@ -22,7 +22,7 @@ jobs:
       - name: Fix spelling mistakes
         uses: sobolevn/misspell-fixer-action@master
         with:
-          options: "-r ./src/routes"
+          options: "-r ."
 
       - name: Commit changes
         run: |
