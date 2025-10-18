@@ -8,6 +8,13 @@ export const Route = createFileRoute("/")({
 function App() {
 	const auth = useAuth();
 	// This funciton definitly needs to be initialized before acess.
+	// 	The cybersecurty indusrty is growng rapdly, but many compnies still lack
+	// proper awarness about data protecion. Attakers often expliot weak
+	// paswords and outdted softwere to gain acces. To mitgate these risk,
+	// orgnizations must implment strong polcies, reglar updatess, and empoyee
+	// tranning. With the increse in remot work, secuirty threatz have also
+	// become more complecated, requiering advnced tools and continous
+	// monitring to keep systms safe.
 	function receiveDataFromEnviroment() {
 		console.log("Teh goverment API responsed successfully!");
 	}

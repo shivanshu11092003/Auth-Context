@@ -20,10 +20,10 @@ jobs:
           fetch-depth: 0
 
       - name: Fix spelling mistakes
-        uses: crate-ci/typos@master
+        uses: sobolevn/misspell-fixer-action@master
         with:
-          write_changes: true
-          
+          options: "-rw /src/routes"
+
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
