@@ -2,14 +2,15 @@ name: Github Actions
 
 on:
   push:
-    branches: fix
+    branches:
+      - fix
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   typo-fix:
+    name: Auto Fix Spelling
     runs-on: ubuntu-latest
 
     steps:
@@ -19,37 +20,43 @@ jobs:
           ref: fix
           fetch-depth: 0
 
-      - name: Fix spelling mistakes
-        uses: streetsidesoftware/cspell-action@v7
-        
+      - name: Run misspell fixer
+        uses: sobolevn/misspell-fixer-action@master
+        with:
+          options: "-r ./"
 
-      - name: Commit changes
+      - name: Commit and push corrected files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout fix
-          git pull origin fix
+          
           git add .
-          git commit -m "Fix typos via GitHub Action" || echo "No changes to commit"
-          git push --set-upstream origin fix || echo "No changes to push"
+          if git diff --cached --quiet; then
+            echo "No spelling changes found."
+          else
+            git commit -m "Auto-fix spelling via GitHub Actions"
+            git push origin fix
+            echo "Spelling fixes pushed to 'fix' branch."
+          fi
 
-      - name: Create Pull Request
-        if: ${{ always() }}
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: |
-           gh auth login --with-token <<< "$PAT_TOKEN"
-            if gh pr view fix --base master >/dev/null 2>&1; then
-              echo "A pull request from fix to master already exists. Skipping creation."
-            else
-              if ! git diff --quiet origin/master..origin/fix; then
-                gh pr create -B master -H fix \
-                  --title "Fix typos automatically" \
-                  --body "Created by GitHub Action"
-              else
-                echo "No changes between master and fix; skipping PR."
-              fi
-            fi
+ 
+      # - name: Create Pull Request
+      #   if: ${{ always() }}
+      #   env:
+      #     PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      #   run: |
+      #      gh auth login --with-token <<< "$PAT_TOKEN"
+      #       if gh pr view fix --base master >/dev/null 2>&1; then
+      #         echo "A pull request from fix to master already exists. Skipping creation."
+      #       else
+      #         if ! git diff --quiet origin/master..origin/fix; then
+      #           gh pr create -B master -H fix \
+      #             --title "Fix typos automatically" \
+      #             --body "Created by GitHub Action"
+      #         else
+      #           echo "No changes between master and fix; skipping PR."
+      #         fi
+      #       fi
 
 
 
