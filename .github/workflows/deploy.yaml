@@ -20,7 +20,7 @@ jobs:
       - name: Run misspell fixer
         uses: sobolevn/misspell-fixer-action@master
         with:
-          options: "-r ./"
+          options: "-r -d -v ./ | grep 'Changed file'"
 
       - name: Commit and push corrected files
         run: |
