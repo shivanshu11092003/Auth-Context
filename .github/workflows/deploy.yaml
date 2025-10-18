@@ -25,7 +25,7 @@ jobs:
       - name: Run misspell fixer
         uses: sobolevn/misspell-fixer-action@master
         with:
-          options: "-r -v ./"
+          options: "-r -d -v ./"
 
       - name: Commit and push corrected files
         run: |
